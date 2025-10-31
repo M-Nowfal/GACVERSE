@@ -1,0 +1,10 @@
+import mongoose, { Document } from "mongoose";
+
+interface ReviewDocument extends Document {
+  name: string;
+  avatar: string;
+  review: string;
+  course: mongoose.Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
+}
