@@ -6,7 +6,7 @@ import SignUpForm from "./SignUpForm";
 
 interface AuthDialogProps {
   defaultType: "login" | "signup";
-  variant?: "ghost" | "secondary";
+  variant?: "ghost" | "secondary" | "primary";
   className?: string;
 };
 
@@ -33,7 +33,7 @@ const AuthDialog = ({ defaultType = "login", variant = "secondary", className = 
           <Button variant={variant} className={className}>Create Account</Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-xl dark:bg-[#1d1d1d]">
+      <DialogContent className="sm:max-w-xl dark:bg-[#1d1d1d]" onOpenAutoFocus={(e) => e.preventDefault()}>
         {authType === "login" ? (
           <LoginForm
             onSwitchToSignup={switchToSignup}

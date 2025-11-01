@@ -1,5 +1,5 @@
 export {
-  login, logout, signup
+  login, logout, signup, getCurrentAuth
 } from "./auth.controller";
 
 export {

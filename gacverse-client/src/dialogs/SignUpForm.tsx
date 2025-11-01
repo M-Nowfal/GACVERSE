@@ -150,9 +150,8 @@ const SignUpForm = ({ onSwitchToLogin, onClose, role = "student" }: SignUpFormPr
               disabled={loading}
             />
             <Button
-              variant="ghost"
               type="button"
-              className="absolute right-0 top-10 transform -translate-y-1/2 text-gray-500 hover:text-gray-400"
+              className="absolute right-0 top-10 transform -translate-y-1/2 text-gray-500 hover:text-black dark:hover:text-white"
               onClick={() => setViewPassword((prev: boolean) => !prev)}
               disabled={loading}
             >
@@ -214,7 +213,7 @@ const SignUpForm = ({ onSwitchToLogin, onClose, role = "student" }: SignUpFormPr
 
         <DialogFooter className="flex flex-col gap-2 mt-6 sm:flex-col">
           <Button
-            variant="default"
+            variant="primary"
             type="submit"
             className="w-full"
             disabled={loading}

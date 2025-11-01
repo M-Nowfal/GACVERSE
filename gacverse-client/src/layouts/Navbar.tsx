@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import ThemeToggler from "@/components/ui/theme-toggler";
 import AuthDialog from "@/dialogs/AuthDialog";
+import UserMenu from "@/dialogs/UserMenu";
+import useAuth from "@/hooks/useAuth";
 import useHistory from "@/hooks/useHistory";
 import { CONSTANTS } from "@/utils/constants";
 import { ArrowLeft } from "lucide-react";
@@ -11,6 +13,7 @@ const Navbar = (): JSX.Element => {
 
   const navigate: NavigateFunction = useNavigate();
   const { canGoBack } = useHistory();
+  const { isLoggedIn } = useAuth();
 
   return (
     <nav className={`flex items-center justify-between px-4 md:pe-20 ${canGoBack ? "md:ps-15" : "md:ps-7"} backdrop-blur-xl fixed top-0 w-full z-10 shadow dark:shadow-slate-700`}>
@@ -37,12 +40,11 @@ const Navbar = (): JSX.Element => {
       </div>
 
       <div className="flex gap-3 items-center">
-        {!true ? (<>
-          {/* User Profile goes here */}
-          {/* <UserMenu /> */}
+        {isLoggedIn ? (<>
+          <UserMenu />
         </>) : (<>
           <AuthDialog defaultType="login" variant="ghost" />
-          <AuthDialog defaultType="signup" variant="secondary" className="hidden md:block" />
+          <AuthDialog defaultType="signup" variant="primary" className="hidden md:block" />
         </>)}
 
         <div className="md:absolute right-2">

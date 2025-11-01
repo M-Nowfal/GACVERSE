@@ -118,3 +118,33 @@
     @apply bg-background text-foreground;
   }
 }
+
+html::-webkit-scrollbar,
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+:root::selection {
+  background-color: #000;
+  color: #fff;
+}
+
+.dark::selection {
+  background-color: #fff;
+  color: #000;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+:root input:-webkit-autofill {
+  -webkit-text-fill-color: #000 !important;
+}
+
+.dark input:-webkit-autofill {
+  -webkit-text-fill-color: #fff !important;
+} 

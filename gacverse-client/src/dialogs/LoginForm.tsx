@@ -115,7 +115,7 @@ const LoginForm = ({ onSwitchToSignup, role = "student", onClose }: LoginFormPro
         )}
 
         <DialogFooter className="flex flex-col gap-2 mt-6 sm:flex-col">
-          <Button variant="default" type="submit" className="w-full" disabled={loading}>
+          <Button variant="primary" type="submit" className="w-full" disabled={loading}>
             {loading ? (
               <>
                 Signing In...

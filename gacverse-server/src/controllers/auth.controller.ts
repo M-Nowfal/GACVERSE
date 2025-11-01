@@ -1,8 +1,16 @@
 import { NextFunction, Request, Response } from "express";
 
+export const getCurrentAuth = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    
+  } catch (err: unknown) {
+    next(err);
+  }
+}
+
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    res.send("Hello")
+    
   } catch (err: unknown) {
     next(err);
   }
