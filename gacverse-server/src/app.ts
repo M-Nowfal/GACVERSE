@@ -18,10 +18,15 @@ app.use(morgan("dev"));
 
 app.use(`/api/${SERVER_CONFIG.version}`, router);
 
+app.use((req: Request, res: Response) => {
+  res.status(404).json({ message: `${req.path} Route not found!` });
+});
+
 app.use((err: unknown, _req: Request, res: Response, next: NextFunction) => {
   const error = err instanceof Error ? err.stack : String(err);
   logger.error(error);
   res.status(500).json({ message: `Internal Server Error!\n${error}` });
+  return next();
 });
 
 export default app;

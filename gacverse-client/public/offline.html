@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/favicons/favicon.ico" />
+  <title>GACVerse | Offline</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: linear-gradient(135deg, #0a0a0a, #1c1c1c);
+      color: #f5f5f5;
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #00935d;
+      margin-bottom: 1rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2rem;
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 15px #00774c;
+      max-width: 320px;
+      width: 90%;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 0.95rem;
+      opacity: 0.8;
+      margin-bottom: 1.2rem;
+    }
+
+    button {
+      background: #00935d;
+      color: #fff;
+      border: none;
+      padding: 0.7rem 1.4rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: #006a43;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.75rem;
+      color: #999;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="logo">🎓 GACVerse</div>
+    <h2>You're Offline</h2>
+    <p>Looks like you've lost internet connection. Don't worry — you can retry once you're back online.</p>
+    <button onclick="window.location.reload()">Try Again</button>
+  </div>
+
+  <div class="footer">Made with 💚 by GACVerse</div>
+</body>
+
+</html>

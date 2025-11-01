@@ -1,5 +1,4 @@
 import mongoose, { Document } from "mongoose";
-import { Course } from "./course";
 import { Student } from "./student";
 import { Instructor } from "./instructor";
 
