@@ -1,18 +1,18 @@
-import { useRef, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const useHistory = () => {
   const location = useLocation();
-  const canGoBack = useRef<boolean>(false);
+  const [canGoBack, setCanGoBack] = useState<boolean>(false);
 
   useEffect(() => {
     if (location.pathname !== "/") 
-      canGoBack.current = true;
+      setCanGoBack(true);
     else
-      canGoBack.current = false;
+      setCanGoBack(false);
   }, [location.pathname]);
 
-  return { canGoBack: canGoBack.current }; 
+  return { canGoBack }; 
 }
 
 export default useHistory;

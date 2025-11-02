@@ -2,7 +2,7 @@
   "name": "gacverse-server",
   "version": "1.0.0",
   "description": "E-Learning Platform for GACCBE",
-  "main": "server.js",
+  "main": "dist/server.js",
   "scripts": {
     "dev": "nodemon src/server.ts",
     "build": "tsc",
@@ -14,7 +14,7 @@
     "GACVERSE",
     "GACCBE"
   ],
-  "author": "Muhammed Nowfal",
+  "author": "Muhammed Nowfal M",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {

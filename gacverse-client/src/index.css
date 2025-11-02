@@ -114,8 +114,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+
+  .text-linear {
+    @apply bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent;
   }
 }
 
@@ -147,4 +152,4 @@ input:-webkit-autofill:active {
 
 .dark input:-webkit-autofill {
   -webkit-text-fill-color: #fff !important;
-} 
+}

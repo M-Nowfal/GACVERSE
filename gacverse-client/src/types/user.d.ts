@@ -15,12 +15,11 @@ interface Student {
 }
 
 interface Instructor {
-  experice: number;
+  experience: number;
   courses: string[];
   expertIn: string;
   bio: string;
 }
-
 
 interface User {
   name: string;

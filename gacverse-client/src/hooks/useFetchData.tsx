@@ -27,7 +27,7 @@ const useFetchData = (url: string): UseFetchDataReturn => {
     } catch (err: unknown) {
       const errMessage = err instanceof AxiosError ? err.response?.data?.message : String(err);
       setError(errMessage);
-      toast.error(errMessage);
+      toast.error(errMessage || "Something went wrong!");
     } finally {
       setLoading(false);
     }

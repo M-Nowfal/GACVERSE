@@ -22,6 +22,7 @@ const Navbar = (): JSX.Element => {
           variant="ghost"
           size="sm"
           onClick={() => navigate(-1)}
+          className="md:absolute left-3"
         >
           <ArrowLeft className="size-5" />
         </Button>

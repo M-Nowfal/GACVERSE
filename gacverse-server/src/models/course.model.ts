@@ -74,9 +74,8 @@ const courseSchema = new mongoose.Schema<CourseDocument>({
     max: 5
   },
   reviews: {
-    type: String,
-    required: true,
-    trim: true
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Review"
   },
   noOfEnrollment: {
     type: Number,

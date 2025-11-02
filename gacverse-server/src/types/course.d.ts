@@ -20,7 +20,7 @@ interface CourseDocument extends Document {
   category: string;
   thumbnail: string;
   rating: number;
-  reviews: Review;
+  reviews: Review[];
   noOfEnrollment: number;
   tags: string[];
   lessons: Lesson[];
