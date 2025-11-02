@@ -16,7 +16,7 @@ const Navbar = (): JSX.Element => {
   const { isLoggedIn } = useAuth();
 
   return (
-    <nav className={`flex items-center justify-between px-4 md:pe-20 ${canGoBack ? "md:ps-15" : "md:ps-7"} backdrop-blur-xl fixed top-0 w-full z-10 shadow dark:shadow-slate-700`}>
+    <nav className={`flex items-center justify-between p-2 md:px-4 md:pe-20 ${canGoBack ? "md:ps-15" : "md:ps-7"} backdrop-blur-xl fixed top-0 w-full z-10 shadow dark:shadow-slate-700`}>
       <div className="flex items-center md:gap-5">
         {canGoBack && <Button
           variant="ghost"
@@ -25,14 +25,13 @@ const Navbar = (): JSX.Element => {
           className="md:absolute left-3"
         >
           <ArrowLeft className="size-5" />
-        </Button>
-        }
-        <Link to="/" className="flex items-center" viewTransition>
+        </Button>}
+        <Link to="/" className="flex items-center gap-2" viewTransition>
           <figure>
             <img
               src={CONSTANTS.app_logo}
               alt={CONSTANTS.app_name}
-              className="w-15 h-15 rounded-lg"
+              className="w-12 h-12 rounded-lg"
             />
             <figcaption hidden>{CONSTANTS.app_name}</figcaption>
           </figure>
@@ -48,7 +47,7 @@ const Navbar = (): JSX.Element => {
           <AuthDialog defaultType="signup" variant="primary" className="hidden md:block" />
         </>)}
 
-        <div className="md:absolute right-2">
+        <div className="md:absolute right-3">
           <ThemeToggler />
         </div>
       </div>

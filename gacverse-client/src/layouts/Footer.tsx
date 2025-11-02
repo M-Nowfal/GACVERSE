@@ -34,7 +34,7 @@ const Footer = (): JSX.Element => {
                 <img
                   src={CONSTANTS.app_logo}
                   alt={CONSTANTS.app_name}
-                  className="w-15 h-15 rounded-lg"
+                  className="w-12 h-12 rounded-lg"
                 />
                 <figcaption hidden>{CONSTANTS.app_name}</figcaption>
               </figure>
