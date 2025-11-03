@@ -1,4 +1,4 @@
-import { Clock, IndianRupee } from "lucide-react";
+import { Clock } from "lucide-react";
 import StarRatings from "@/components/common/StarRatings";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import Profile from "@/components/common/Profile";
@@ -50,10 +50,6 @@ const CourseCard = ({ course }: { course: Course }): JSX.Element => {
         </div>
         <div className="flex items-center justify-between gap-1">
           <div className="flex items-center gap-2">
-            <div className="flex items-center">
-              <IndianRupee className="size-5" />
-              <span className={`${"line-through text-gray-500"} text-xl font-bold`}>0</span>
-            </div>
             <span className="text-lg text-purple-600 font-semibold">Free</span>
           </div>
           <div className="bg-blue-500/20 py-0.1 px-2 rounded-full shadow">

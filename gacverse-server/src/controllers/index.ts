@@ -3,12 +3,12 @@ export {
 } from "./auth.controller";
 
 export {
-  getFeaturedCourses, getAllCourses,
+  getFeaturedCourses, getCourses,
   getSingleCourse, addCourse,
   deleteCourse, updateCourse
 } from "./course.controller";
 
 export {
-  getFeaturedReviews, getAllReviews,
+  getFeaturedReviews, getReviews,
   addReview, updateReview, deleteReview
 } from "./review.controller";

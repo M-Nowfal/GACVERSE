@@ -1,10 +1,10 @@
 import express from "express";
-import { addCourse, deleteCourse, getAllCourses, getFeaturedCourses, getSingleCourse, updateCourse } from "../controllers";
+import { addCourse, deleteCourse, getCourses, getFeaturedCourses, getSingleCourse, updateCourse } from "../controllers";
 
 export const courseRoutes = express.Router();
 
+courseRoutes.get("/pagination", getCourses);
 courseRoutes.get("/featured", getFeaturedCourses);
-courseRoutes.get("/all", getAllCourses);
 courseRoutes.post("/add", addCourse);
 courseRoutes.put("/update/:courseid", updateCourse);
 courseRoutes.delete("/delete", deleteCourse);
