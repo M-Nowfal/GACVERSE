@@ -42,12 +42,10 @@ const userSchema = new mongoose.Schema<UserDocument>({
   },
   avatar: {
     type: String,
-    required: false,
-    default: "@/assets/images/avatar.svg"
+    trim: true
   },
   details: {
     type: Object,
-    required: false,
     default: {}
   },
   isActive: {

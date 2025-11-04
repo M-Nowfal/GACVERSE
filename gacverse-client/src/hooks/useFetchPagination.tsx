@@ -4,31 +4,36 @@ import axios, { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";
 
 interface UseFetchPaginationReturn {
-  data: any[];
+  data: Course[] | Testimonial[];
   error: string | null;
   loading: boolean;
-  fetchNextPage: () => Promise<void>;
+  fetchNextPage: (search?: string) => Promise<void>;
   hasMore: boolean;
 }
 
 const cache = new Cache();
 
-const useFetchPagination = (url: string, property: string): UseFetchPaginationReturn => {
-  const [data, setData] = useState<any[]>([]);
+const useFetchPagination = (url: string, property: string, search?: string): UseFetchPaginationReturn => {
+  const [data, setData] = useState<Course[] | Testimonial[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const nextPage = useRef<number>(1);
 
-  const fetchPage = async (): Promise<void> => {
+  const fetchPage = async (newSearch?: string): Promise<void> => {
     try {
-      const cacheKey = `${url}?page=${nextPage.current}`;
+      const searchQuery = newSearch || search;
+      const cacheKey = `${url}?page=${nextPage.current}${searchQuery ? `&search=${searchQuery}` : ""}`;
       setLoading(true);
 
       if (cache.has(cacheKey)) {
         const cachedData = cache.get(cacheKey);
-        setData(prev => [...prev, ...cachedData as Array<any>]);
-        nextPage.current += 1;
+        if (searchQuery)
+          setData(cachedData as Array<any>);
+        else {
+          setData(prev => [...prev, ...cachedData as Array<any>]);
+          nextPage.current += 1;
+        }
         return;
       }
 
@@ -36,7 +41,10 @@ const useFetchPagination = (url: string, property: string): UseFetchPaginationRe
       const response = await axios.get(end_point, { withCredentials: true });
       if (response.status === 200) {
         const newData = response.data[property];
-        setData(prev => [...prev, ...newData]);
+        if (searchQuery)
+          setData(newData);
+        else
+          setData(prev => [...prev, ...newData]);
         nextPage.current = response.data.nextPage;
         setHasMore(response.data.hasMore);
         cache.set(cacheKey, newData);
@@ -44,6 +52,7 @@ const useFetchPagination = (url: string, property: string): UseFetchPaginationRe
     } catch (err: unknown) {
       const errMessage = err instanceof AxiosError ? err.response?.data?.message : String(err).slice(0, 25);
       setError(errMessage);
+      setTimeout(() => setError(null), 5000);
     } finally {
       setLoading(false);
     }

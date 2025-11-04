@@ -1,20 +1,22 @@
 import CourseCard from "@/components/cards/CourseCard";
 import { type JSX } from "react";
 import { Button } from "@/components/ui/button";
-import useScroll from "@/hooks/useScroll";
-import useFetchPagination from "@/hooks/useFetchPagination";
+import { useScroll, useFetchNextOnBottom, useFetchPagination } from "@/hooks";
 import { SpinnerLoader } from "@/components/common/Loader";
 import Error from "@/components/common/Error";
 import SearchBar from "@/components/common/SearchBar";
-import useScrollBottom from "@/hooks/useScrollBottom";
+import { useSearchParams } from "react-router-dom";
 
 const Course = (): JSX.Element => {
   useScroll();
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get("search") || undefined;
+
   const {
     data, error, loading, fetchNextPage, hasMore
-  } = useFetchPagination("/course/pagination", "courses");
+  } = useFetchPagination(`/course`, "courses", search);
 
-  useScrollBottom(() => {
+  useFetchNextOnBottom(() => {
     hasMore && fetchNextPage();
   }, 200);
 
@@ -23,7 +25,7 @@ const Course = (): JSX.Element => {
 
       {loading && data.length === 0 ? (
         <div className="flex justify-center items-center h-[60vh]">
-          <SpinnerLoader size={15} />
+          <SpinnerLoader size={60} color="blue" />
         </div>
       ) : error ? (
         <Error
@@ -34,10 +36,10 @@ const Course = (): JSX.Element => {
       ) : (
         <>
           <div className="w-[90%] m-auto">
-            <SearchBar />
+            <SearchBar onSearch={(search: string) => fetchNextPage(search)} />
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7 m-auto w-[90%] max-w-7xl">
-            {data.map((course: Course) => (
+            {(data as Course[]).map((course: Course) => (
               <CourseCard
                 key={course._id}
                 course={course}
@@ -51,7 +53,7 @@ const Course = (): JSX.Element => {
             </div>
           )}
 
-          {!hasMore && (
+          {!hasMore && data.length > 0 && (
             <div className="flex justify-center mt-5">
               <p className="text-muted-foreground">No more courses</p>
             </div>

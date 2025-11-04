@@ -6,7 +6,7 @@ import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/co
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState, type JSX } from "react";
-import useMutateData from "@/hooks/useMutateData";
+import { useMutateData } from "@/hooks";
 import { Separator } from "@/components/ui/separator";
 import { google } from "@/assets";
 import { useUserStore } from "@/store/useUserStore";
@@ -23,6 +23,7 @@ type FormData = {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
   password: string;
   confirmPassword: string;
   terms: boolean;
@@ -129,6 +130,25 @@ const SignUpForm = ({ onSwitchToLogin, onClose, role = "student" }: SignUpFormPr
             {errors.email && <ValidationError error={errors.email.message!} />}
           </div>
 
+          <div className="grid gap-2">
+            <Label htmlFor="phone">Phone</Label>
+            <Input
+              id="phone"
+              type="tel"
+              autoComplete="mobile tel"
+              {...register("phone", {
+                required: "Phone Number is required",
+                pattern: {
+                  value: /^[\d]{10}$/,
+                  message: "Enter a valid phone number",
+                },
+              })}
+              placeholder="Enter your phone number"
+              disabled={loading}
+            />
+            {errors.phone && <ValidationError error={errors.phone.message!} />}
+          </div>
+
           <div className="grid gap-2 relative">
             <Label htmlFor="password">Password</Label>
             <Input
@@ -200,7 +220,7 @@ const SignUpForm = ({ onSwitchToLogin, onClose, role = "student" }: SignUpFormPr
         </div>
 
         {error && (
-          <div className="mt-4 text-center">
+          <div className="mt-4 text-center border border-red-600 rounded-md p-3">
             <p className="text-red-500 font-semibold">{error || "Login failed. Please try again."}</p>
           </div>
         )}

@@ -1,18 +1,16 @@
 import { type JSX } from "react";
 import TestimonialCard from "@/components/cards/TestimonialCard";
 import { Button } from "@/components/ui/button";
-import useScroll from "@/hooks/useScroll";
+import { useScroll, useFetchNextOnBottom, useFetchPagination } from "@/hooks";
 import { MessageSquare, PlusCircle } from "lucide-react";
-import useFetchPagination from "@/hooks/useFetchPagination";
-import useScrollBottom from "@/hooks/useScrollBottom";
 import { SpinnerLoader } from "@/components/common/Loader";
 import Error from "@/components/common/Error";
 
 const Testimonials = (): JSX.Element => {
-  const { data, error, loading, fetchNextPage, hasMore } = useFetchPagination("/review/pagination", "reviews");
+  const { data, error, loading, fetchNextPage, hasMore } = useFetchPagination("/review", "reviews");
   useScroll();
 
-  useScrollBottom(() => {
+  useFetchNextOnBottom(() => {
     hasMore && fetchNextPage();
   }, 200);
 
@@ -50,7 +48,7 @@ const Testimonials = (): JSX.Element => {
           </div>
 
           <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-6 m-auto w-[90%] max-w-7xl">
-            {data.map((testimonial: Testimonial) => (
+            {(data as Testimonial[]).map((testimonial: Testimonial) => (
               <TestimonialCard
                 key={testimonial._id}
                 testimonial={testimonial}

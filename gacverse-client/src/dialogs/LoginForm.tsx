@@ -6,7 +6,7 @@ import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/co
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useEffect, type JSX } from "react";
-import useMutateData from "@/hooks/useMutateData";
+import { useMutateData } from "@/hooks";
 import { Separator } from "@/components/ui/separator";
 import { google } from "@/assets";
 import { useUserStore } from "@/store/useUserStore";
@@ -103,8 +103,8 @@ const LoginForm = ({ onSwitchToSignup, role = "student", onClose }: LoginFormPro
         </div>
 
         {error && (
-          <div className="mt-4 text-center">
-            <p className="text-red-500 font-semibold">{error || "Login failed. Please try again."}</p>
+          <div className="mt-4 text-center border border-red-600 rounded-md p-3">
+            <p className="text-red-600 font-semibold">{error || "Login failed. Please try again."}</p>
           </div>
         )}
 

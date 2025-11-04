@@ -3,7 +3,7 @@ import { addCourse, deleteCourse, getCourses, getFeaturedCourses, getSingleCours
 
 export const courseRoutes = express.Router();
 
-courseRoutes.get("/pagination", getCourses);
+courseRoutes.get("/", getCourses);
 courseRoutes.get("/featured", getFeaturedCourses);
 courseRoutes.post("/add", addCourse);
 courseRoutes.put("/update/:courseid", updateCourse);

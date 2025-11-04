@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
-const useScroll = (): void => {
+const useScroll = (scrollTo: "top" | "bottom" = "top"): void => {
   useEffect(() => {
-    window.scrollTo({ top: 0 });
+    window.scrollTo({ [scrollTo]: 0 });
   }, []);
 }
 

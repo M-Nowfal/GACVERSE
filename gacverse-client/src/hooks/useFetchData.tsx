@@ -36,6 +36,7 @@ const useFetchData = (url: string): UseFetchDataReturn => {
     } catch (err: unknown) {
       const errMessage = err instanceof AxiosError ? err.response?.data?.message : String(err);
       setError(errMessage);
+      setTimeout(() => setError(null), 5000);
       toast.error(errMessage || "Something went wrong!");
     } finally {
       setLoading(false);

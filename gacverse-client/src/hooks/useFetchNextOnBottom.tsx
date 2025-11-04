@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const useScrollBottom = (callback: () => void, offset: number = 250) => {
+const useFetchNextOnBottom = (callback: () => void, offset: number = 250) => {
   const isFetching = useRef<boolean>(false);
 
   useEffect(() => {
@@ -24,4 +24,4 @@ const useScrollBottom = (callback: () => void, offset: number = 250) => {
   }, [callback, offset]);
 }
 
-export default useScrollBottom;
+export default useFetchNextOnBottom;

@@ -18,12 +18,27 @@ export const getFeaturedCourses = async (req: Request, res: Response, next: Next
 export const getCourses = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const page = Number(req.query.page || 1);
-    const totalCourses = await Course.countDocuments();
+    const search = req.query.search as string | undefined;
+
+    let searchQuery = {};
+    if (search) {
+      const regex = new RegExp(search, "i");
+      searchQuery = {
+        $or: [
+          { title: { $regex: regex } },
+          { tags: { $regex: regex } },
+          { description: { $regex: regex } }
+        ]
+      };
+    }
+
+    const totalCourses = await Course.countDocuments(searchQuery);
     const hasMore = page * DB_CONFIG.page_limit < totalCourses;
-    const courses = await Course.find()
+
+    const courses = await Course.find(searchQuery)
       .populate("instructor", "name avatar details")
       .sort({ noOfEnrollment: -1 })
-      .skip((page - 1) * DB_CONFIG.page_limit)
+      .skip(totalCourses <= DB_CONFIG.page_limit ? 0 : (page - 1) * DB_CONFIG.page_limit)
       .limit(DB_CONFIG.page_limit);
 
     res.status(200).json({

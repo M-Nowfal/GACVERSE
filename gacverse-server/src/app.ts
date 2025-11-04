@@ -6,6 +6,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import logger from "./utils/logger";
 import { router } from "./routes/router";
+import { ZodError } from "zod";
 
 const app = express();
 
@@ -22,11 +23,18 @@ app.use((req: Request, res: Response) => {
   res.status(404).json({ message: `${req.path} Route not found!` });
 });
 
-app.use((err: unknown, _req: Request, res: Response, next: NextFunction) => {
-  const error = err instanceof Error ? err.stack : String(err);
-  logger.error(error);
-  res.status(500).json({ message: `Internal Server Error!\n${error}` });
-  return next();
+app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+  let errMessage = "Internal Server Error";
+
+  if (err instanceof ZodError) {
+    errMessage = err.issues.map((e) => `${e.path.join(".")}: ${e.message}`).join(", ");
+  } else if (err instanceof Error) {
+    errMessage = err.message;
+  } else if (typeof err === "string") {
+    errMessage = err;
+  }
+
+  res.status(500).json({ message: errMessage });
 });
 
 export default app;

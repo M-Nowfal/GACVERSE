@@ -6,7 +6,7 @@ import { SpinnerLoader } from "@/components/common/Loader";
 import SearchBar from "@/components/common/SearchBar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import useFetchData from "@/hooks/useFetchData";
+import { useFetchData, useScroll } from "@/hooks";
 import { CONSTANTS } from "@/utils/constants";
 import { ArrowRight, Award, BookOpen, List, MessageSquare, Users } from "lucide-react";
 import type { JSX } from "react";
@@ -287,6 +287,7 @@ const GetStart = (): JSX.Element => {
 }
 
 const Home = () => {
+  useScroll();
 
   return (
     <>

@@ -1,7 +1,6 @@
 import { CONSTANTS } from "@/utils/constants";
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
-import { toast } from "sonner";
 
 interface UseMutateDataReturn {
   data: any | null;
@@ -42,7 +41,7 @@ const useMutateData = (method: "POST" | "PUT" | "PATCH" | "DELETE" = "POST"): Us
     } catch (err: unknown) {
       const errMessage = err instanceof AxiosError ? err.response?.data?.message : String(err);
       setError(errMessage);
-      toast.error(errMessage);
+      setTimeout(() => setError(null), 5000);
     } finally {
       setLoading(false);
     }
