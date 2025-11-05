@@ -7,6 +7,7 @@ import morgan from "morgan";
 import logger from "./utils/logger";
 import { router } from "./routes/router";
 import { ZodError } from "zod";
+import { limiter } from "./middlewares";
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(morgan("dev"));
 
-app.use(`/api/${SERVER_CONFIG.version}`, router);
+app.use(`/api/${SERVER_CONFIG.version}`, limiter, router);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({ message: `${req.path} Route not found!` });
@@ -33,7 +34,7 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   } else if (typeof err === "string") {
     errMessage = err;
   }
-
+  logger.error(err);
   res.status(500).json({ message: errMessage });
 });
 

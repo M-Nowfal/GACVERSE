@@ -9,6 +9,7 @@ interface UseFetchPaginationReturn {
   loading: boolean;
   fetchNextPage: (search?: string) => Promise<void>;
   hasMore: boolean;
+  isFetching: boolean;
 }
 
 const cache = new Cache();
@@ -18,6 +19,7 @@ const useFetchPagination = (url: string, property: string, search?: string): Use
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
   const nextPage = useRef<number>(1);
 
   const fetchPage = async (newSearch?: string): Promise<void> => {
@@ -25,7 +27,7 @@ const useFetchPagination = (url: string, property: string, search?: string): Use
       const searchQuery = newSearch || search;
       const cacheKey = `${url}?page=${nextPage.current}${searchQuery ? `&search=${searchQuery}` : ""}`;
       setLoading(true);
-
+      newSearch && setIsFetching(true);
       if (cache.has(cacheKey)) {
         const cachedData = cache.get(cacheKey);
         if (searchQuery)
@@ -55,6 +57,7 @@ const useFetchPagination = (url: string, property: string, search?: string): Use
       setTimeout(() => setError(null), 5000);
     } finally {
       setLoading(false);
+      setIsFetching(false);
     }
   }
 
@@ -62,7 +65,11 @@ const useFetchPagination = (url: string, property: string, search?: string): Use
     fetchPage();
   }, []);
 
-  return { data, error, loading, fetchNextPage: fetchPage, hasMore };
+  return {
+    data, error,
+    loading, fetchNextPage: fetchPage,
+    hasMore, isFetching
+  };
 }
 
 export default useFetchPagination;

@@ -13,7 +13,9 @@ const Course = (): JSX.Element => {
   const search = searchParams.get("search") || undefined;
 
   const {
-    data, error, loading, fetchNextPage, hasMore
+    data, error,
+    loading, fetchNextPage,
+    hasMore, isFetching
   } = useFetchPagination(`/course`, "courses", search);
 
   useFetchNextOnBottom(() => {
@@ -38,14 +40,15 @@ const Course = (): JSX.Element => {
           <div className="w-[90%] m-auto">
             <SearchBar onSearch={(search: string) => fetchNextPage(search)} />
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7 m-auto w-[90%] max-w-7xl">
+
+          {!isFetching && <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7 m-auto w-[90%] max-w-7xl">
             {(data as Course[]).map((course: Course) => (
               <CourseCard
                 key={course._id}
                 course={course}
               />
             ))}
-          </div>
+          </div>}
 
           {loading && (
             <div className="flex justify-center my-8">
@@ -53,7 +56,7 @@ const Course = (): JSX.Element => {
             </div>
           )}
 
-          {!hasMore && data.length > 0 && (
+          {!hasMore && data.length > 0 && !isFetching && (
             <div className="flex justify-center mt-5">
               <p className="text-muted-foreground">No more courses</p>
             </div>
@@ -75,7 +78,7 @@ const Course = (): JSX.Element => {
           </p>
           <Button
             variant="secondary"
-            onClick={() => fetchNextPage()}
+            onClick={() => fetchNextPage("all")}
             className="mt-2"
           >
             Browse All Courses

@@ -14,6 +14,7 @@ import { useravatar } from "@/assets";
 import { Button } from "@/components/ui/button";
 import useLogout from "@/hooks/useLogout";
 import { PencilIcon } from "lucide-react";
+import Alert from "./Alert";
 
 const UserMenu = () => {
   const { user } = useUserStore();
@@ -76,14 +77,16 @@ const UserMenu = () => {
         )}
 
         <DialogFooter className="flex flex-col gap-2 mt-6 sm:flex-col">
-          <Button
-            variant="destructive"
-            type="button"
-            className="w-full"
-            onClick={logout}
-          >
-            Log out
-          </Button>
+          <Alert
+            trigger={
+              <Button variant="destructive" type="button" className="w-full">
+                Log Out
+              </Button>
+            }
+            alertFor="Log out of your account?"
+            description="You can log back in anytime with your credentials."
+            onContinue={logout}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>

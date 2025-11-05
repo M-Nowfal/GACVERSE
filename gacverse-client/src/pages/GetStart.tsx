@@ -1,0 +1,74 @@
+import { Link } from "react-router-dom";
+import { ArrowRight, BookOpen, Users, Brain } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { useScroll } from "@/hooks";
+import { CONSTANTS } from "@/utils/constants";
+import type { JSX } from "react";
+import { useUserStore } from "@/store/useUserStore";
+import AuthDialog from "@/dialogs/AuthDialog";
+
+const GetStart = (): JSX.Element => {
+  useScroll();
+  const { user } = useUserStore();
+
+  return (
+    <section className="min-h-[90vh] flex flex-col items-center justify-center px-6 pb-10">
+      <div className="max-w-5xl text-center">
+        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 text-linear">
+          Welcome to {CONSTANTS.app_name}
+        </h1>
+
+        <p className="text-lg sm:text-xl text-muted-foreground mb-10 leading-relaxed">
+          Your one-stop platform for college-based e-learning - where professors share,
+          students learn, and growth happens together. Let&apos;s make learning smarter, not harder.
+        </p>
+
+        <div className="grid sm:grid-cols-3 gap-6 mb-12">
+          <Card className="group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 py-3">
+            <CardHeader className="flex flex-col items-center text-center space-y-3">
+              <BookOpen className="text-purple-600 group-hover:scale-110 transition-transform" size={40} />
+              <CardTitle className="text-lg font-semibold">Learn From Experts</CardTitle>
+              <CardDescription className="text-muted-foreground">
+                Access high-quality courses curated by real college professors.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 py-3">
+            <CardHeader className="flex flex-col items-center text-center space-y-3">
+              <Users className="text-blue-600 group-hover:scale-110 transition-transform" size={40} />
+              <CardTitle className="text-lg font-semibold">Connect & Collaborate</CardTitle>
+              <CardDescription className="text-muted-foreground">
+                Join a growing community of learners and educators.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 py-3">
+            <CardHeader className="flex flex-col items-center text-center space-y-3">
+              <Brain className="text-purple-600 group-hover:scale-110 transition-transform" size={40} />
+              <CardTitle className="text-lg font-semibold">Grow Your Skills</CardTitle>
+              <CardDescription className="text-muted-foreground">
+                Learn anytime, anywhere — track progress & master new topics fast.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </div>
+
+        <div className="flex flex-col md:flex-row items-center justify-center gap-5 w-full max-w-xl m-auto">
+          <Link to="/courses" viewTransition className="flex-1 w-full">
+            <Button variant="secondary" size="lg" className="w-full group">
+              Explore Courses <ArrowRight className="group-hover:translate-x-3 transition-all duration-300" />
+            </Button>
+          </Link>
+          {!user && <div className="w-full md:flex-1">
+            <AuthDialog defaultType="login" variant="primary" className="w-full" />
+          </div>}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default GetStart;

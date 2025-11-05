@@ -1,9 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/Home";
+import { 
+  Home, PageNotFound, 
+  Course, Testimonials, 
+  LearnMore, GetStart, 
+  VerifyOtp 
+} from "./pages";
 import HomeLayout from "./layouts/HomeLayout";
-import PageNotFound from "./pages/PageNotFound";
-import Course from "./pages/Course";
-import Testimonials from "./pages/Testimonials";
 
 const Router = () => {
 
@@ -12,7 +14,7 @@ const Router = () => {
       path: "/",
       element: <HomeLayout />,
       children: [
-        { 
+        {
           index: true,
           element: <Home />
         },
@@ -23,6 +25,18 @@ const Router = () => {
         {
           path: "reviews",
           element: <Testimonials />
+        },
+        {
+          path: "learnmore",
+          element: <LearnMore />
+        },
+        {
+          path: "getstart",
+          element: <GetStart />
+        },
+        {
+          path: "verify-otp",
+          element: <VerifyOtp />
         }
       ]
     },
