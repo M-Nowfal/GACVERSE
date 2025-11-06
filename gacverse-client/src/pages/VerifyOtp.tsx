@@ -5,24 +5,37 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useMutateData } from "@/hooks";
-import useUrlParams from "@/hooks/useUrlParams";
+import { useMutateData, useReactRouter, useStorage } from "@/hooks";
+import { useUserStore } from "@/store";
 import { AxiosError } from "axios";
 import { Clock, KeyRound } from "lucide-react";
 import { useEffect, useState, type JSX } from "react";
-import { useNavigate, type NavigateFunction } from "react-router-dom";
 import { toast } from "sonner";
 
 const VerifyOtp = (): JSX.Element => {
+  const { navigate, state } = useReactRouter();
   const [otp, setOtp] = useState<string>("");
   const [timer, setTimer] = useState<number>(59);
   const { data, error, loading, mutate } = useMutateData();
-  const { query } = useUrlParams();
-  const navigate: NavigateFunction = useNavigate();
+  const { storage } = useStorage("sessionStorage");
+  const { setUser } = useUserStore();
+
+  useEffect(() => {
+    if (!state || !state.email) {
+      toast.warning("Unauthorized, Email is required");
+      navigate("/");
+      return;
+    }
+    const interval = setInterval(() => {
+      setTimer(prev => prev <= 0 ? 0 : prev - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const resendOtp = async (): Promise<void> => {
     try {
-      await mutate("/auth/send-otp", { email: query["email"] });
+      await mutate("/auth/send-otp", { email: state?.email });
     } catch (err: unknown) {
       const errMessage = err instanceof AxiosError ?
         (err.response?.data?.message || err.response?.statusText) : String(err).slice(0, 50);
@@ -32,36 +45,32 @@ const VerifyOtp = (): JSX.Element => {
 
   const verifyOtp = async () => {
     try {
-      await mutate("/auth/verify-otp", { email: query["email"] });
+      await mutate("/auth/verify-otp", { email: state?.email, otp });
     } catch (err: unknown) {
-      
+      const errMessage = err instanceof AxiosError ? err.response?.data?.message : String(err).slice(50);
+      toast.error(errMessage);
     }
   }
 
   useEffect(() => {
-    if (data) {
-      toast.success(data.message);
-      setTimer(59);
-    }
+    (async () => {
+      if (data?.isVerified) {
+        await mutate(`/auth/signup`, storage.get("signupdata"));
+      } else if (data?.success) {
+        toast.success(data.message);
+        setUser(data.user);
+        storage.clear();
+        navigate("/dashboard", { replace: true });
+      } else {
+        setTimer(59);
+      }
+    })();
   }, [data]);
 
   useEffect(() => {
     if (error)
       toast.error(error);
   }, [error]);
-
-  useEffect(() => {
-    if (!query["email"] || query["email"].length < 10) {
-      toast.warning("Email is required");
-      navigate("/");
-      return;
-    }
-    const interval = setInterval(() => {
-      setTimer(prev => prev <= 0 ? 0 : prev - 1);
-    }, 10);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="flex justify-center items-center mt-30 my-20">
@@ -74,7 +83,7 @@ const VerifyOtp = (): JSX.Element => {
           <p className="text-muted-foreground mb-2 max-w-sm">
             We've sent a 6-digit verification code to your registered email address
           </p>
-          <span className="text-sky-500">{query["email"]}</span>
+          <span className="text-sky-500">{state?.email}</span>
         </div>
 
         <div className="w-full flex flex-col items-center px-6 mb-6">
@@ -96,7 +105,7 @@ const VerifyOtp = (): JSX.Element => {
           </InputOTP>
         </div>
 
-        <div className="w-sm flex justify-center mb-5">
+        <div className="w-[80%] max-w-sm flex justify-center mb-5">
           <Button
             variant="primary"
             className="w-full"

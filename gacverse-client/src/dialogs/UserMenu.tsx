@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useUserStore } from "@/store/useUserStore";
+import { useUserStore } from "@/store";
 import Profile from "@/components/common/Profile";
 import { useravatar } from "@/assets";
 import { Button } from "@/components/ui/button";

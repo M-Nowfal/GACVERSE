@@ -66,7 +66,8 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
     res.cookie("token", token, COOKIE_OPTION);
     res.status(201).json({
       message: "Registration Success",
-      user
+      user,
+      success: true
     });
   } catch (err: unknown) {
     next(err);
@@ -89,8 +90,8 @@ export const sendOtp = async (req: Request, res: Response, next: NextFunction) =
       return res.status(400).json({ message: "Email is required" });
     const result = await sendOtpToMail(email);
     if (result.isOtpSent)
-      return res.status(200).json({ message: result.message });
-    res.status(400).json({ message: result.message });
+      return res.status(200).json({ message: result.message, isOtpSent: result.isOtpSent });
+    res.status(400).json({ message: result.message, isOtpSent: result.isOtpSent });
   } catch (err: unknown) {
     next(err);
   }
@@ -100,9 +101,9 @@ export const verifyOtp = async (req: Request, res: Response, next: NextFunction)
   try {
     const { email, otp } = req.body;
     if (await verifyCode(email, otp))
-      return res.status(200).json({ message: "OTP verified successfully!" });
+      return res.status(200).json({ message: "OTP verified successfully!", isVerified: true });
 
-    res.status(409).json({ message: "OTP verification failed" });
+    res.status(409).json({ message: "OTP verification failed", isVerified: false });
   } catch (err: unknown) {
     next(err);
   }

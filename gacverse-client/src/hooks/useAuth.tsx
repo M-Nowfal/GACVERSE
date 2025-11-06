@@ -1,4 +1,4 @@
-import { useUserStore } from "@/store/useUserStore";
+import { useUserStore } from "@/store";
 import { CONSTANTS } from "@/utils/constants";
 import axios from "axios";
 import { useEffect } from "react";

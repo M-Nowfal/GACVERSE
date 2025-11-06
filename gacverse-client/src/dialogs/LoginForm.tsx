@@ -9,7 +9,7 @@ import { useEffect, type JSX } from "react";
 import { useMutateData } from "@/hooks";
 import { Separator } from "@/components/ui/separator";
 import { google } from "@/assets";
-import { useUserStore } from "@/store/useUserStore";
+import { useUserStore } from "@/store";
 import { toast } from "sonner";
 
 interface LoginFormProps {

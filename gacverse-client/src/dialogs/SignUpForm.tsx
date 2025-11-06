@@ -6,12 +6,12 @@ import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/co
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState, type JSX } from "react";
-import { useMutateData } from "@/hooks";
+import { useMutateData, useStorage } from "@/hooks";
 import { Separator } from "@/components/ui/separator";
 import { google } from "@/assets";
-import { useUserStore } from "@/store/useUserStore";
 import { toast } from "sonner";
 import { Eye, EyeOff } from "lucide-react";
+import { useNavigate, type NavigateFunction } from "react-router-dom";
 
 interface SignUpFormProps {
   onSwitchToLogin: () => void;
@@ -29,16 +29,18 @@ type FormData = {
   terms: boolean;
 };
 
-const SignUpForm = ({ onSwitchToLogin, onClose, role = "student" }: SignUpFormProps): JSX.Element => {
+const SignUpForm = ({ onSwitchToLogin, onClose }: SignUpFormProps): JSX.Element => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>();
   const [viewPassword, setViewPassword] = useState<boolean>(false);
   const { loading, error, data, mutate } = useMutateData("POST");
-  const { setUser } = useUserStore();
+  const navigate: NavigateFunction = useNavigate();
+  const { storage } = useStorage("sessionStorage");
 
   const onSubmit = async (data: FormData) => {
     try {
+      await mutate("/auth/send-otp", { email: data.email });
       const { confirmPassword, terms, ...submitData } = data;
-      await mutate(`/auth/signup?role=${role}`, submitData);
+      storage.set("signupdata", submitData);
     } catch (error: unknown) {
       console.error("Signup failed: ", error);
     }
@@ -46,15 +48,12 @@ const SignUpForm = ({ onSwitchToLogin, onClose, role = "student" }: SignUpFormPr
 
   useEffect(() => {
     if (data && !error && !loading) {
-      if (data.user)
-        setUser(data.user);
-      toast.success(data.message);
-
-      const timer = setTimeout(() => {
+      if (data.isOtpSent) {
+        toast.success(data.message);
         onClose();
-      }, 800);
-
-      return () => clearTimeout(timer);
+        navigate("/verify-otp", { state: { email: (storage.get("signupdata")).email } });
+        return;
+      }
     }
   }, [data]);
 

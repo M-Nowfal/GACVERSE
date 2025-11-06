@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 import { useScroll } from "@/hooks";
 import { CONSTANTS } from "@/utils/constants";
 import type { JSX } from "react";
-import { useUserStore } from "@/store/useUserStore";
+import { useUserStore } from "@/store";
 import AuthDialog from "@/dialogs/AuthDialog";
 
 const GetStart = (): JSX.Element => {

@@ -139,7 +139,7 @@ const LearnMore = (): JSX.Element => {
             Join thousands of students who transformed their careers with <span className="text-linear">{CONSTANTS.app_name}</span>
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-3xl">
-            <Link to="/getstart" className="w-full sm:flex-1">
+            <Link to="/getstart" className="w-full sm:flex-1" viewTransition>
               <Button size="lg" variant="primary" className="w-full">
                 Get Started Today
               </Button>

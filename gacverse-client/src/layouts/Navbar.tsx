@@ -4,7 +4,7 @@ import AuthDialog from "@/dialogs/AuthDialog";
 import UserMenu from "@/dialogs/UserMenu";
 import { useAuth } from "@/hooks";
 import { useHistory } from "@/hooks";
-import { useUserStore } from "@/store/useUserStore";
+import { useUserStore } from "@/store";
 import { CONSTANTS } from "@/utils/constants";
 import { ArrowLeft } from "lucide-react";
 import type { JSX } from "react";
