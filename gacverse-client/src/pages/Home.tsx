@@ -159,7 +159,7 @@ const CourseList = (): JSX.Element => {
           error={error}
         />
       ) : (loading ? (
-        <SpinnerLoader />
+        <SpinnerLoader size={40} color="blue" />
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 m-auto w-[90%] max-w-6xl">
           {data?.courses?.map((course: Course) => (
@@ -214,7 +214,7 @@ const Testimonials = (): JSX.Element => {
         </p>
       </div>
       {loading ? (
-        <SpinnerLoader />
+        <SpinnerLoader size={40} color="blue" />
       ) : (
         error ? (
           <Error

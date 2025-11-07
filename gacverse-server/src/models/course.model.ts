@@ -8,25 +8,36 @@ const lessonSchema = new mongoose.Schema<Lesson>({
     required: true,
     trim: true
   },
+  lectures: [{
+    title: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    videoUrl: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    duration: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    order: {
+      type: Number,
+      required: true,
+      min: 1
+    },
+    description: {
+      type: String,
+      trim: true
+    }
+  }],
   description: {
     type: String,
     required: true,
     trim: true
-  },
-  videoUrl: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  duration: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  order: {
-    type: Number,
-    required: true,
-    min: 1
   }
 }, { timestamps: true });
 
@@ -87,6 +98,9 @@ const courseSchema = new mongoose.Schema<CourseDocument>({
   lessons: {
     type: [lessonSchema],
     default: []
+  },
+  whatsInTheCourse: {
+    type: [String]
   }
 }, { timestamps: true });
 
