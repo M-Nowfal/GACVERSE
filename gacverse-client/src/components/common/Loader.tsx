@@ -3,15 +3,15 @@ import type { JSX } from "react";
 
 interface Loader {
   size?: number;
-  color?: "red" | "blue" | "green" | "yellow" | "gray";
+  color?: "purple" | "blue" | "green" | "yellow" | "gray" | "white";
 }
 
 const colorMap: Record<string, string> = {
-  red: "text-red-500",
+  purple: "text-purple-500",
   blue: "text-blue-500",
   green: "text-green-500",
-  yellow: "text-yellow-500",
   gray: "text-gray-500",
+  white: "text-white",
 };
 
 export const SpinnerLoader = ({ size = 24, color = "gray" }: Loader): JSX.Element => {

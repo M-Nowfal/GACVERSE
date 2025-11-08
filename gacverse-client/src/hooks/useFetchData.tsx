@@ -19,9 +19,9 @@ const useFetchData = (url: string): UseFetchDataReturn => {
   const [error, setError] = useState<string | null>(null);
 
   const fetchData = async (apiUrl?: string): Promise<void> => {
+    setLoading(true);
     try {
       const end_point = CONSTANTS.api_url + (apiUrl || url);
-      setLoading(true);
       if (cache.has(end_point)) {
         setData(cache.get(end_point));
       } else {

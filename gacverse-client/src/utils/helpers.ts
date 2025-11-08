@@ -12,4 +12,14 @@ export const getFirstTwoLettersOfName = (name: string): string => {
     console.error(error);
     return "NA";
   }
-};
+}
+
+export const totalLectures = (lessons: Array<any>): number => {
+  return lessons.reduce((acc: number, lesson: any) => acc + lesson.lectures.length, 0);
+}
+
+export const formatDuration = (duration: string) => {
+  return duration.split(":").map((t: string, i: number) => (
+    i === 0 ? t + "h" : i === 1 ? t + "m" : t + "s"
+  )).join(" ");
+} 

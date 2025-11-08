@@ -57,7 +57,7 @@ const Footer = (): JSX.Element => {
               <Link to="/courses" state={{ from: ["/"] }} className="w-fit text-slate-400 hover:text-white transition-colors text-sm">
                 Browse Courses
               </Link>
-              <Link to="/login" className="w-fit text-slate-400 hover:text-white transition-colors text-sm">
+              <Link to="#" className="w-fit text-slate-400 hover:text-white transition-colors text-sm">
                 Teach on {CONSTANTS.app_name}
               </Link>
               <Link to="/about" className="w-fit text-slate-400 hover:text-white transition-colors text-sm">
@@ -74,7 +74,7 @@ const Footer = (): JSX.Element => {
               <h4 className="text-lg font-semibold text-white">Stay Updated</h4>
               <Input
                 type="email"
-                autoComplete="off"
+                autoComplete="email"
                 id={useId()}
                 placeholder="Enter your email"
                 className="bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 focus:ring-blue-500 text-sm"

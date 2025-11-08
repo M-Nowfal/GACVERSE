@@ -224,12 +224,6 @@ const SignUpForm = ({ onSwitchToLogin, onClose }: SignUpFormProps): JSX.Element 
           </div>
         )}
 
-        {data && (
-          <div className="text-center rounded-md mt-5">
-            <p className="text-emerald-600 font-semibold animate-pulse">Login successful! Redirecting...</p>
-          </div>
-        )}
-
         <DialogFooter className="flex flex-col gap-2 mt-6 sm:flex-col">
           <Button
             variant="primary"
@@ -240,7 +234,7 @@ const SignUpForm = ({ onSwitchToLogin, onClose }: SignUpFormProps): JSX.Element 
             {loading ? (
               <>
                 Creating Account...
-                <SpinnerLoader size={5} />
+                <SpinnerLoader size={5} color="white" />
               </>
             ) : (
               "Create Account"

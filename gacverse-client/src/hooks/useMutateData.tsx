@@ -15,6 +15,7 @@ const useMutateData = (method: "POST" | "PUT" | "PATCH" | "DELETE" = "POST"): Us
   const [error, setError] = useState<string | null>(null);
 
   const mutateData = async (url: string, body: Record<string, any>, headers?: Record<string, any>): Promise<void> => {
+    setLoading(true);
     try {
       let response = null;
       const end_point = CONSTANTS.api_url + url;

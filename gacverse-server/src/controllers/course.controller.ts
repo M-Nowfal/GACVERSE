@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Course } from "../models";
+import { Course, Lesson } from "../models";
 import { DB_CONFIG } from "../constants";
 
 export const getFeaturedCourses = async (req: Request, res: Response, next: NextFunction) => {
@@ -41,6 +41,7 @@ export const getCourses = async (req: Request, res: Response, next: NextFunction
         $or: [
           { title: { $regex: regex } },
           { tags: { $regex: regex } },
+          { whatsInTheCourse: { $regex: regex } },
           { description: { $regex: regex } }
         ]
       };
@@ -68,7 +69,17 @@ export const getCourses = async (req: Request, res: Response, next: NextFunction
 export const getSingleCourse = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { courseid } = req.params;
-    const course = await Course.findById(courseid).populate("instructor", "name avatar details");
+    const course = await Course.findById(courseid).populate([
+      {
+        path: "instructor",
+        select: "name avatar details"
+      },
+      {
+        path: "lessons",
+        select: "title description lectures",
+        populate: { path: "lectures" }
+      }
+    ]);
 
     if (!course)
       return res.status(404).json({ message: "Course not found" });

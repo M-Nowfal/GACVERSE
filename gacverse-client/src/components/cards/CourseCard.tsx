@@ -47,7 +47,7 @@ const CourseCard = ({ course }: { course: Course }): JSX.Element => {
             </div>
             <div className="flex items-center gap-2">
               <Clock size={15} className="text-muted-foreground" />
-              <span className="text-sm">{duration}</span>
+              <span className="text-sm">{duration.split(":")[0]} hour</span>
             </div>
           </div>
           <div className="flex items-center justify-between gap-1">

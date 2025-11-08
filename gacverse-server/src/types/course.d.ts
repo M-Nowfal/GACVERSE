@@ -1,17 +1,17 @@
 import mongoose, { Document } from "mongoose";
 import { Review } from "./review";
 
-interface Lesson extends Document {
+interface Lecture {
   title: string;
-  lectures: [
-    {
-      title: string;
-      videoUrl: string;
-      duration: string;
-      order: number;
-      description: string;
-    }
-  ];
+  videoUrl: string;
+  duration: string;
+  order: number;
+  description: string;
+}
+
+interface LessonDocument extends Document {
+  title: string;
+  lectures: [Lecture];
   description: string;
   createdAt: Date;
   updatedAt: Date;
@@ -29,7 +29,7 @@ interface CourseDocument extends Document {
   reviews: Review[];
   noOfEnrollment: number;
   tags: string[];
-  lessons: Lesson[];
+  lessons: mongoose.Types.ObjectId[];
   whatsInTheCourse: string[];
   createdAt: Date;
   updatedAt: Date;

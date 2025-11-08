@@ -18,7 +18,7 @@ import Alert from "./Alert";
 
 const UserMenu = () => {
   const { user } = useUserStore();
-  const { logout } = useLogout();
+  const { logout, loading } = useLogout();
 
   const userName = user?.name || `${user?.firstName || ""} ${user?.lastName || ""}`.trim();
 
@@ -79,8 +79,8 @@ const UserMenu = () => {
         <DialogFooter className="flex flex-col gap-2 mt-6 sm:flex-col">
           <Alert
             trigger={
-              <Button variant="destructive" type="button" className="w-full">
-                Log Out
+              <Button variant="destructive" type="button" className="w-full" disabled={loading}>
+                {loading ? "Logging out..." : "Log Out"}
               </Button>
             }
             alertFor="Log out of your account?"

@@ -1,45 +1,5 @@
 import mongoose from "mongoose";
 import { CourseDocument } from "../types";
-import { Lesson } from "../types/course";
-
-const lessonSchema = new mongoose.Schema<Lesson>({
-  title: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  lectures: [{
-    title: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    videoUrl: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    duration: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    order: {
-      type: Number,
-      required: true,
-      min: 1
-    },
-    description: {
-      type: String,
-      trim: true
-    }
-  }],
-  description: {
-    type: String,
-    required: true,
-    trim: true
-  }
-}, { timestamps: true });
 
 const courseSchema = new mongoose.Schema<CourseDocument>({
   title: {
@@ -60,7 +20,8 @@ const courseSchema = new mongoose.Schema<CourseDocument>({
   duration: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    default: "00:00:00"
   },
   level: {
     type: String,
@@ -96,7 +57,8 @@ const courseSchema = new mongoose.Schema<CourseDocument>({
     type: [String]
   },
   lessons: {
-    type: [lessonSchema],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Lesson",
     default: []
   },
   whatsInTheCourse: {

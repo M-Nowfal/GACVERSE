@@ -1,16 +1,16 @@
+interface Lecture {
+  _id: string;
+  title: string;
+  videoUrl: string;
+  duration: string;
+  order: number;
+  description: string;
+}
+
 interface Lesson {
   _id: string;
   title: string;
-  lectures: [
-    {
-      _id: string;
-      title: string;
-      videoUrl: string;
-      duration: string;
-      order: number;
-      description: string;
-    }
-  ];
+  lectures: [Lecture];
   description: string;
   createdAt: Date;
   updatedAt: Date;

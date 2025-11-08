@@ -41,7 +41,8 @@ const SearchBar = ({ onSearch }: { onSearch?: (search: string) => Promise<void> 
             size="lg"
             onClick={handleSearch}
           >
-            Search
+            <span className="hidden lg:block">Search</span>
+            <Search className="size-5 lg:hidden" />
           </Button>
         </Link>
       </div>
