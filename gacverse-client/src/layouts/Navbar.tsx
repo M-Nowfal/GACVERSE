@@ -1,3 +1,4 @@
+import { SpinnerLoader } from "@/components/common/Loader";
 import { Button } from "@/components/ui/button";
 import ThemeToggler from "@/components/ui/theme-toggler";
 import AuthDialog from "@/dialogs/AuthDialog";
@@ -11,7 +12,7 @@ import type { JSX } from "react";
 import { useNavigate, type NavigateFunction } from "react-router-dom";
 
 const Navbar = (): JSX.Element => {
-  useAuth();
+  const { loading } = useAuth();
   const navigate: NavigateFunction = useNavigate();
   const { canGoBack } = useHistory();
   const { user } = useUserStore();
@@ -41,12 +42,16 @@ const Navbar = (): JSX.Element => {
       </div>
 
       <div className="flex gap-3 items-center">
-        {user ? (<>
-          <UserMenu />
-        </>) : (<>
-          <AuthDialog defaultType="login" variant="ghost" />
-          <AuthDialog defaultType="signup" variant="primary" className="hidden md:block" />
-        </>)}
+        {loading ? (
+          <SpinnerLoader color="blue" />
+        ) : (
+          user ? (<>
+            <UserMenu />
+          </>) : (<>
+            <AuthDialog defaultType="login" variant="ghost" />
+            <AuthDialog defaultType="signup" variant="primary" className="hidden md:block" />
+          </>)
+        )}
 
         <div className="md:absolute right-3">
           <ThemeToggler />
