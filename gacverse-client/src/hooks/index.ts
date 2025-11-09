@@ -7,6 +7,7 @@ import useMutateData from "./useMutateData";
 import useReactRouter from "./useReactRouter";
 import useScroll from "./useScroll";
 import useStorage from "./useStorage";
+import useThemeColor from "./useThemeColor";
 
 export {
   useAuth,
@@ -17,5 +18,6 @@ export {
   useMutateData,
   useScroll,
   useReactRouter,
-  useStorage
+  useStorage,
+  useThemeColor
 };

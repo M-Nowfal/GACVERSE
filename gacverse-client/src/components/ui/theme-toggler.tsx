@@ -1,9 +1,11 @@
 import { Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "@/providers/ThemeProvider"
+import { useThemeColor } from "@/hooks";
 
 const ThemeToggler = () => {
-	const { setTheme, theme } = useTheme()
+	const { setTheme, theme } = useTheme();
+	useThemeColor(theme);
 
 	return (
 		<Button variant="outline" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">
