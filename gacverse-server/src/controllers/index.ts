@@ -14,3 +14,7 @@ export {
   getFeaturedReviews, getReviews,
   addReview, updateReview, deleteReview
 } from "./review.controller";
+
+export { 
+  enrollStudentInCourse 
+} from "./student.controller";

@@ -6,19 +6,32 @@ import StarRatings from "@/components/common/StarRatings";
 import { Accordion } from "@/components/ui/accordion";
 import { useFetchData, useReactRouter, useScroll } from "@/hooks";
 import { useMetaTags } from "@/hooks/useMetaTags";
+import { useUserStore } from "@/store";
 import { formatDuration, totalLectures } from "@/utils/helpers";
-import { type JSX } from "react";
+import { useEffect, useState, type JSX } from "react";
 
 const CourseEnrollment = (): JSX.Element | null => {
   useScroll();
   const { params: { id } } = useReactRouter();
+  const { user } = useUserStore();
   const { data, error, loading, reFetchData } = useFetchData(`/course/${id}`);
+  const [isAlreadyEnrolled, setIsAlreadyEnrolled] = useState<boolean>(false);
 
   useMetaTags({
     title: data?.course?.title,
     description: data?.course?.description,
     keywords: data?.course?.category,
   });
+
+  useEffect(() => {
+    if (data?.course && user !== null) {
+      const enrolledCourses = user?.details?.student?.enrolledCourses || [];
+      const enrolled = enrolledCourses.some((course) =>
+        course.course._id === data.course._id
+      );
+      setIsAlreadyEnrolled(enrolled);
+    }
+  }, [data]);
 
   if (loading)
     return (
@@ -39,11 +52,18 @@ const CourseEnrollment = (): JSX.Element | null => {
   if (!data?.course) return null;
 
   const {
-    title, description, thumbnail,
+    _id: courseid, title, description, thumbnail,
     rating, reviews, duration,
     lessons, instructor, category,
     whatsInTheCourse, noOfEnrollment
   } = data.course;
+
+  const courseInfo = {
+    thumbnail, title, category,
+    rating, duration, courseid,
+    lessons, whatsInTheCourse,
+    isAlreadyEnrolled, setIsAlreadyEnrolled
+  };
 
   return (
     <div className="my-25 flex flex-col gap-10 mx-3">
@@ -54,11 +74,7 @@ const CourseEnrollment = (): JSX.Element | null => {
             <p className="text-muted-foreground max-w-5xl">{description}</p>
 
             <div className="lg:hidden flex flex-col gap-2 border pb-5 rounded-xl shadow w-full my-5">
-              <CourseInfoCard {...{
-                thumbnail, title, category,
-                rating, duration,
-                lessons, whatsInTheCourse
-              }} />
+              <CourseInfoCard {...courseInfo} />
             </div>
 
             <div className="flex flex-col text-muted-foreground gap-1">
@@ -95,11 +111,7 @@ const CourseEnrollment = (): JSX.Element | null => {
           </div>
 
           <div className="hidden sticky top-25 lg:flex flex-col gap-2 border pb-5 rounded-xl shadow w-full h-fit sm:w-lg lg:w-[40%] xl:w-[30%]">
-            <CourseInfoCard {...{
-              thumbnail, title, category,
-              rating, duration,
-              lessons, whatsInTheCourse
-            }} />
+            <CourseInfoCard {...courseInfo} />
           </div>
         </div>
       )}

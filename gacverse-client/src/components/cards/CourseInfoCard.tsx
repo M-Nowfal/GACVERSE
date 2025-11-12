@@ -1,9 +1,14 @@
 import { BookOpenText, Clock, Star } from "lucide-react";
 import { Button } from "../ui/button";
-import type { JSX } from "react";
+import { useEffect, type JSX } from "react";
 import { Badge } from "../ui/badge";
+import { useMutateData } from "@/hooks";
+import { useUserStore } from "@/store";
+import { toast } from "sonner";
+import { SpinnerLoader } from "../common/Loader";
 
 interface CourseInfoCardProps {
+  courseid: string;
   thumbnail: string;
   title: string;
   category: string,
@@ -11,12 +16,38 @@ interface CourseInfoCardProps {
   duration: string;
   lessons: Array<any>;
   whatsInTheCourse: Array<string>;
+  isAlreadyEnrolled: boolean;
+  setIsAlreadyEnrolled: (val: boolean) => void;
 }
 
 const CourseInfoCard = ({
   thumbnail, title, rating, category,
-  duration, lessons, whatsInTheCourse
+  courseid, duration, lessons,
+  whatsInTheCourse, isAlreadyEnrolled, setIsAlreadyEnrolled
 }: CourseInfoCardProps): JSX.Element => {
+  const { data, error, loading, mutate } = useMutateData();
+  const { user, setUser } = useUserStore();
+
+  const handleEnrollNow = () => {
+    try {
+      if (user !== null)
+        mutate(`/user/student/enroll/${courseid}`, { id: user._id });
+    } catch (err: unknown) {
+      const errMessage = err instanceof Error ? err.message : "Failed to enroll in course";
+      toast.error(errMessage);
+    }
+  }
+
+  useEffect(() => {
+    if (data && !loading && !error && data.updatedStudent) {
+      setUser(data.updatedStudent);
+      toast.success(data.message);
+      setIsAlreadyEnrolled(true);
+    } else if (error) {
+      toast.warning(error);
+    }
+  }, [data, error]);
+
   return (
     <>
       <figure className="relative">
@@ -39,8 +70,14 @@ const CourseInfoCard = ({
         <Button
           variant="primary"
           className="my-3"
+          onClick={handleEnrollNow}
+          disabled={loading || isAlreadyEnrolled}
         >
-          Enroll Now
+          {loading ? (
+            <span className="flex items-center gap-2">
+              Enrolling <SpinnerLoader color="white" />
+            </span>
+          ) : isAlreadyEnrolled ? "Enrolled" : "Enroll Now"}
         </Button>
         <h3 className="text-xl font-semibold">What&apos;s in the course?</h3>
         <ol className="text-muted-foreground list-disc ms-5">

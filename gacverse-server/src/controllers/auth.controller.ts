@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { User } from "../models";
+import { User, Course } from "../models";
 import { compare, generateToken, hash, sendOtpToMail, verifyCode } from "../lib";
 import { COOKIE_OPTION } from "../constants/cookie-options";
 
@@ -7,7 +7,10 @@ export const getCurrentAuth = async (req: Request, res: Response, next: NextFunc
   try {
     if (!req.user)
       return res.status(401).json({ message: "Not authenticated" });
-    const user = await User.findById(req.user.userId).select("-password").lean();
+    const user = await User.findById(req.user.userId)
+      .populate("details.student.enrolledCourses.course")
+      .populate("details.instructor.courses")
+      .select("-password");
     if (!user)
       return res.status(404).json({ message: "User not found" });
     res.status(200).json({ user });

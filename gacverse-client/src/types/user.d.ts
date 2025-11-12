@@ -1,5 +1,5 @@
 interface CourseProgress {
-  course: string;
+  course: Course;
   progress: number;
   completedLessons: string[];
   enrolledAt: Date;
@@ -22,6 +22,7 @@ interface Instructor {
 }
 
 interface User {
+  _id: string;
   name: string;
   firstName: string;
   lastName: string;
@@ -29,7 +30,10 @@ interface User {
   avatar: string;
   email: string;
   phone: string;
-  details: Student | Instructor;
+  details: {
+    student?: Student;
+    instructor?: Instructor;
+  };
   createdAt: Date;
   updatedAt: Date;
   isActive: boolean;
