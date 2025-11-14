@@ -23,7 +23,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email })
+      .populate("details.student.enrolledCourses.course")
+      .populate("details.instructor.courses");
     if (!user)
       return res.status(404).json({ message: "User not found" });
 
@@ -77,7 +79,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
   }
 }
 
-export const logout = async (req: Request, res: Response, next: NextFunction) => {
+export const logout = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     res.clearCookie("token", COOKIE_OPTION);
     res.status(200).json({ message: "Logged out successfully" });
@@ -86,14 +88,40 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
   }
 }
 
+export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email, password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) 
+      return res.status(400).json({ message: "Password mismatch" });
+    
+    const user = await User.findOne({ email });
+
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
+
+    const hashedPassword = await hash(password);
+    await User.findOneAndUpdate({ email }, { $set: { password: hashedPassword } });
+    res.status(200).json({ 
+      message: "Password updated successfully",
+      success: true
+    });
+  } catch (err: unknown) {
+    next(err);
+  }
+}
+
 export const sendOtp = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email } = req.body;
-    if (!email || !email.trim() || email.trim().length < 5)
-      return res.status(400).json({ message: "Email is required" });
     const result = await sendOtpToMail(email);
-    if (result.isOtpSent)
-      return res.status(200).json({ message: result.message, isOtpSent: result.isOtpSent });
+    if (result.isOtpSent) {
+      return res.status(200).json({ 
+        message: result.message, 
+        isOtpSent: result.isOtpSent,
+        email
+      });
+    }
     res.status(400).json({ message: result.message, isOtpSent: result.isOtpSent });
   } catch (err: unknown) {
     next(err);
@@ -103,8 +131,14 @@ export const sendOtp = async (req: Request, res: Response, next: NextFunction) =
 export const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, otp } = req.body;
-    if (await verifyCode(email, otp))
-      return res.status(200).json({ message: "OTP verified successfully!", isVerified: true });
+    if (await verifyCode(email, otp)) {
+      const token = generateToken(otp, email);
+      return res.status(200).json({ 
+        message: "OTP verified successfully!", 
+        isVerified: true,
+        token
+      });
+    }
 
     res.status(409).json({ message: "OTP verification failed", isVerified: false });
   } catch (err: unknown) {

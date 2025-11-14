@@ -32,6 +32,8 @@ const CourseInfoCard = ({
     try {
       if (user !== null)
         mutate(`/user/student/enroll/${courseid}`, { id: user._id });
+      else 
+        toast.warning("Login to enroll a course");
     } catch (err: unknown) {
       const errMessage = err instanceof Error ? err.message : "Failed to enroll in course";
       toast.error(errMessage);

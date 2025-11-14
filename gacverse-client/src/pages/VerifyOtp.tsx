@@ -1,3 +1,4 @@
+import { SpinnerLoader } from "@/components/common/Loader";
 import { Button } from "@/components/ui/button";
 import {
   InputOTP,
@@ -7,6 +8,7 @@ import {
 } from "@/components/ui/input-otp";
 import { useMutateData, useReactRouter, useStorage } from "@/hooks";
 import { useUserStore } from "@/store";
+import { CONSTANTS } from "@/utils/constants";
 import { AxiosError } from "axios";
 import { Clock, KeyRound } from "lucide-react";
 import { useEffect, useState, type JSX } from "react";
@@ -55,7 +57,18 @@ const VerifyOtp = (): JSX.Element => {
   useEffect(() => {
     (async () => {
       if (data?.isVerified) {
-        await mutate(`/auth/signup`, storage.get("signupdata"));
+        const headers = { authorization: `Bearer${CONSTANTS.split}${data.token}` };
+        if (state?.verificationFor === "signup")
+          await mutate(`/auth/signup`, storage.get("signupdata"), headers);
+        else if (state?.verificationFor === "resetpassword") {
+          navigate("/resetpassword", { 
+            replace: true, 
+            state: { 
+              email: state?.email,
+              token: data.token
+            } 
+          });
+        }
       } else if (data?.success) {
         toast.success(data.message);
         setUser(data.user);
@@ -71,6 +84,8 @@ const VerifyOtp = (): JSX.Element => {
     if (error)
       toast.error(error);
   }, [error]);
+
+  const otpBoxStyle = "w-10 h-10 text-lg border border-gray-300 rounded-lg transition-all duration-200";
 
   return (
     <div className="flex justify-center items-center mt-30 my-20">
@@ -90,17 +105,22 @@ const VerifyOtp = (): JSX.Element => {
           <div className="text-center mb-4">
             <span className="text-sm text-gray-500">Enter the code below</span>
           </div>
-          <InputOTP maxLength={6} value={otp} onChange={(v) => setOtp(v)}>
+          <InputOTP
+            maxLength={6}
+            value={otp}
+            onChange={(v) => setOtp(v)}
+            onKeyDown={(e) => otp.length === 6 && e.key === "Enter" && verifyOtp()}
+          >
             <InputOTPGroup className="gap-1">
-              <InputOTPSlot index={0} className="w-10 h-10 text-lg border border-gray-300 rounded-lg transition-all duration-200" />
-              <InputOTPSlot index={1} className="w-10 h-10 text-lg border border-gray-300 rounded-lg transition-all duration-200" />
-              <InputOTPSlot index={2} className="w-10 h-10 text-lg border border-gray-300 rounded-lg transition-all duration-200" />
+              <InputOTPSlot index={0} className={otpBoxStyle} />
+              <InputOTPSlot index={1} className={otpBoxStyle} />
+              <InputOTPSlot index={2} className={otpBoxStyle} />
             </InputOTPGroup>
             <InputOTPSeparator />
             <InputOTPGroup className="gap-1">
-              <InputOTPSlot index={3} className="w-10 h-10 text-lg border border-gray-300 rounded-lg transition-all duration-200" />
-              <InputOTPSlot index={4} className="w-10 h-10 text-lg border border-gray-300 rounded-lg transition-all duration-200" />
-              <InputOTPSlot index={5} className="w-10 h-10 text-lg border border-gray-300 rounded-lg transition-all duration-200" />
+              <InputOTPSlot index={3} className={otpBoxStyle} />
+              <InputOTPSlot index={4} className={otpBoxStyle} />
+              <InputOTPSlot index={5} className={otpBoxStyle} />
             </InputOTPGroup>
           </InputOTP>
         </div>
@@ -110,8 +130,10 @@ const VerifyOtp = (): JSX.Element => {
             variant="primary"
             className="w-full"
             onClick={verifyOtp}
+            disabled={loading}
           >
             Verify OTP
+            {loading && <SpinnerLoader color="white" />}
           </Button>
         </div>
 

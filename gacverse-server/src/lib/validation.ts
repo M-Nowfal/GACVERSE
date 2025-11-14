@@ -12,9 +12,13 @@ export const signUpSchema = z.object({
   email: z.email("Invalid email address"),
   phone: z.string().regex(/^[6-9]\d{9}$/, "Invalid phone number"),
   password: z.string().min(8, "Pasword must be at leat 8 characters")
-});
+}).strict();
 
 export const loginSchema = z.object({
   email: z.email("Invalid email address"),
   password: z.string().min(8, "Pasword must be at leat 8 characters")
-});
+}).strict();
+
+export const emailSchema = z.object({
+  email: z.email("Invalid email address").min(5, "Email must longer than 5 characters")
+}).strict();

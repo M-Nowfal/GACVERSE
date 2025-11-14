@@ -13,7 +13,7 @@ import { useUserStore } from "@/store";
 import { toast } from "sonner";
 
 interface LoginFormProps {
-  onSwitchToSignup: () => void;
+  onSwitchToSignup: (type: "login" | "signup" | "forgetpassword") => void;
   role?: "student" | "instructor" | "admin";
   onClose: () => void;
 }
@@ -84,7 +84,15 @@ const LoginForm = ({ onSwitchToSignup, role = "student", onClose }: LoginFormPro
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
+            <div className="flex justify-between">
+              <Label htmlFor="password">Password</Label>
+              <Button 
+                variant="link" 
+                className="text-sky-600"
+                onClick={() => onSwitchToSignup("forgetpassword")}
+                type="button"
+              >Forget password</Button>
+            </div>
             <Input
               id="password"
               type="password"
@@ -145,7 +153,7 @@ const LoginForm = ({ onSwitchToSignup, role = "student", onClose }: LoginFormPro
             type="button"
             variant="link"
             className="p-0 h-auto font-semibold"
-            onClick={onSwitchToSignup}
+            onClick={() => onSwitchToSignup("signup")}
             disabled={loading}
           >
             Sign up

@@ -14,7 +14,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useNavigate, type NavigateFunction } from "react-router-dom";
 
 interface SignUpFormProps {
-  onSwitchToLogin: () => void;
+  onSwitchToLogin: (type: "login" | "signup" | "forgetpassword") => void;
   onClose: () => void;
   role?: "student" | "instructor" | "admin";
 }
@@ -51,7 +51,12 @@ const SignUpForm = ({ onSwitchToLogin, onClose }: SignUpFormProps): JSX.Element 
       if (data.isOtpSent) {
         toast.success(data.message);
         onClose();
-        navigate("/verify-otp", { state: { email: (storage.get("signupdata")).email } });
+        navigate("/verify-otp", {
+          state: {
+            email: data.email,
+            verificationFor: "signup"
+          }
+        });
         return;
       }
     }
@@ -266,7 +271,7 @@ const SignUpForm = ({ onSwitchToLogin, onClose }: SignUpFormProps): JSX.Element 
             type="button"
             variant="link"
             className="p-0 h-auto font-semibold"
-            onClick={onSwitchToLogin}
+            onClick={() => onSwitchToLogin("login")}
             disabled={loading}
           >
             Sign in
